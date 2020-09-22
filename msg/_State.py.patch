@@ -1,0 +1,22 @@
+--- _State.py	2020-08-04 12:37:48.878392769 +0200
++++ _State.py.patched	2020-08-04 14:44:43.076569424 +0200
+@@ -43,6 +43,19 @@
+         self.state = 0
+     else:
+       self.state = 0
++    # does not work because of __slots__
++    # consts_names = [attr_n for attr_n in dir(State) if attr_n[0].isupper()]
++    # self._const_val_to_name = {getattr(self, const_name): const_name for const_name in consts_names}
++
++  def __int__(self):
++    return self.state
++
++  def __str__(self):
++      """Returns a name of the first constant matches with current state value."""
++      for attr in dir(State):
++          if attr[0].isupper() and getattr(self, attr) == self.state:
++              return attr
++      # return self._const_val_to_name[self.state]
+ 
+   def _get_types(self):
+     """
